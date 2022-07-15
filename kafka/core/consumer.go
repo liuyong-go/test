@@ -52,11 +52,11 @@ func (h consumeGroupHandler) Cleanup(_ sarama.ConsumerGroupSession) error {
 func (h consumeGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for msg := range claim.Messages() {
 		fmt.Printf("%s Message topic:%q partition:%d offset:%d  value:%s\n", h.name, msg.Topic, msg.Partition, msg.Offset, string(msg.Value))
-		// 手动确认消息
 		fv := reflect.ValueOf(h.callfunc)
 		in := make([]reflect.Value, 1)
 		in[0] = reflect.ValueOf(string(msg.Value))
 		fv.Call(in)
+		// 手动确认消息
 		sess.MarkMessage(msg, "mark")
 	}
 	return nil
