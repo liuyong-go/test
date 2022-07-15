@@ -55,7 +55,10 @@ func (h consumeGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, clai
 		fv := reflect.ValueOf(h.callfunc)
 		in := make([]reflect.Value, 1)
 		in[0] = reflect.ValueOf(string(msg.Value))
-		fv.Call(in)
+		err := fv.Call(in)[0].Interface()
+		if err != nil {
+			fmt.Println("BAKC ERR", err)
+		}
 		// 手动确认消息
 		sess.MarkMessage(msg, "mark")
 	}

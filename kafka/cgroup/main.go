@@ -15,5 +15,6 @@ func main() {
 }
 func getMessage(msg string) error {
 	fmt.Println("callback message", msg)
-	return nil
+	return fmt.Errorf("test error data")
+	//return nil
 }
